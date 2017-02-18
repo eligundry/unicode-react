@@ -1,4 +1,5 @@
 import React from 'react';
+import { Row } from 'reactstrap';
 import CharacterListItem from './CharacterListItem';
 const unicode_map = require('lazy-unicode');
 
@@ -40,9 +41,9 @@ export default class CharacterList extends React.Component {
 
   render() {
     return (
-      <div className="character-list">
+      <Row className="character-list">
         {this.createCharacterList()}
-      </div>
+      </Row>
     );
   }
 }
