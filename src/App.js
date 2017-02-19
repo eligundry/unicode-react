@@ -21,6 +21,10 @@ export default class App extends Component {
     );
   }
 
+  /**
+   * Method that will initialized the IndexedDB database that will store all the
+   * character information needed for this application.
+   */
   initDB() {
     db.version(1).stores({
       characters: 'id,hex,name',
@@ -37,15 +41,20 @@ export default class App extends Component {
       .then((data) => {
         // Split the file on it's newlines and map the individual characters
         // into a list of objects to be inserted into the database.
-        const character_mappings = data.split('\n').map((line) => {
-          let split = line.split('\t');
+        const character_mappings = (
+          data
+          .replace(/\n$/, '')
+          .split('\n')
+          .map((line) => {
+            let split = line.split('\t');
 
-          return {
-            id: parseInt(`0x${split[1]}`, 16),
-            name: split[0],
-            hex: split[1],
-          }
-        });
+            return {
+              id: parseInt(`0x${split[1]}`, 16),
+              name: split[0],
+              hex: split[1].toLowerCase(),
+            }
+          })
+        );
 
         // Add all the characters to the database.
         return db.characters.bulkPut(character_mappings);

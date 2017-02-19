@@ -21,9 +21,17 @@ export default class CharacterList extends React.Component {
     );
   }
 
+  /**
+   * Create all the CharacterListItem elements for the blocks specified in this
+   * component's state.
+   *
+   * @return array[CharacterListItem]
+   */
   createCharacterList() {
     return this.state.blocks.map((block) => {
       let characterList = [];
+      // This is the best way and only way to split a unicode string on it's
+      // characters and not it's codepoints in ES6.
       const characters = [...UNICODE[block]];
 
       // IMPORTANT: This has to be a traditional for loop because of how
@@ -35,7 +43,7 @@ export default class CharacterList extends React.Component {
         characterList.push(
           <CharacterListItem
             key={key_name}
-            block='MAHJONG_TILES'
+            block={block}
             character={character} />
         );
       }

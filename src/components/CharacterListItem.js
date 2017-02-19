@@ -12,10 +12,10 @@ export default class CharacterListItem extends React.Component {
   }
 
   render() {
-    let name = this.state.record ? this.state.record.name : '';
+    let name = this.state.record ? this.state.record.name : 'No Name Available';
 
     return (
-      <Col lg='1' sm="3" xs="12">
+      <Col lg='2' sm="3" xs="12" className="character-list-item">
         <Card>
           <CardBlock>
             <CardTitle>{this.props.character}</CardTitle>
@@ -23,9 +23,9 @@ export default class CharacterListItem extends React.Component {
             <CardText tag='div'>
               <dl>
                 <dt>Codepoint</dt>
-                <dd>{this.getCharCode()}</dd>
+                <dd><code>{this.getCharCode()}</code></dd>
                 <dt>Hex</dt>
-                <dd>{this.getCharHex()}</dd>
+                <dd><code>{this.getCharHex()}</code></dd>
               </dl>
             </CardText>
           </CardBlock>
@@ -34,10 +34,20 @@ export default class CharacterListItem extends React.Component {
     );
   }
 
+  /**
+   * Get the integer representation of the character.
+   *
+   * @return int
+   */
   getCharCode() {
     return this.props.character.codePointAt(0);
   }
 
+  /**
+   * Get the hex representation of the character.
+   *
+   * @return String
+   */
   getCharHex() {
     return this.getCharCode().toString(16);
   }
@@ -45,9 +55,11 @@ export default class CharacterListItem extends React.Component {
   /**
    * Fetch the character's information from the database and trigger it's
    * setting of state.
+   *
+   * @return Promise
    */
   getRecord() {
-    db.characters
+    return db.characters
       .get(this.getCharCode())
       .then((data) => {
         this.setState({
